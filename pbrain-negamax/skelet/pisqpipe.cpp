@@ -29,7 +29,7 @@ static char cmd[256];
 static HANDLE event1, event2;
 
 /** write a line to STDOUT */
-int pipeOut(char *fmt, ...)
+int pipeOut(const char *fmt, ...)
 {
   int i;
   va_list va;
@@ -96,14 +96,14 @@ static const char *get_cmd_param(const char *cmd, const char *input)
 /** send suggest */
 void suggest(int x, int y)
 {
-  pipeOut((char *)"SUGGEST %d,%d", x, y);
+  pipeOut("SUGGEST %d,%d", x, y);
 }
 
 /** write move to the pipe and update internal data structures */
 void do_mymove(int x, int y)
 {
   brain_my(x, y);
-  pipeOut((char *)"%d,%d", x, y);
+  pipeOut("%d,%d", x, y);
 }
 
 /** main function for the working thread */
@@ -194,7 +194,7 @@ static void do_command()
   {
     if (sscanf(param, "%d ,%d", &width, &height) != 2)
     {
-      pipeOut((char *)"ERROR bad RECTSTART parameters");
+      pipeOut("ERROR bad RECTSTART parameters");
     }
     else
     {
@@ -212,7 +212,7 @@ static void do_command()
     start();
     if (!parse_coord(param, &x, &y))
     {
-      pipeOut((char *)"ERROR bad coordinates");
+      pipeOut("ERROR bad coordinates");
     }
     else
     {
@@ -225,7 +225,7 @@ static void do_command()
     start();
     if (!parse_coord(param, &x, &y))
     {
-      pipeOut((char *)"ERROR bad coordinates");
+      pipeOut("ERROR bad coordinates");
     }
     else
     {
@@ -243,7 +243,7 @@ static void do_command()
 #ifdef ABOUT_FUNC
     brain_about();
 #else
-    pipeOut((char *)"%s", infotext);
+    pipeOut("%s", infotext);
 #endif
   }
   else if ((param = get_cmd_param("end", cmd)) != 0)
@@ -280,7 +280,7 @@ static void do_command()
       else
       {
         if (_stricmp(cmd, "done"))
-          pipeOut((char *)"ERROR x,y,who or DONE expected after BOARD");
+          pipeOut("ERROR x,y,who or DONE expected after BOARD");
         break;
       }
     }
@@ -302,7 +302,7 @@ static void do_command()
   }
   else
   {
-    pipeOut((char *)"UNKNOWN command");
+    pipeOut("UNKNOWN command");
   }
 }
 

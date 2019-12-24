@@ -1,124 +1,48 @@
-#include <iostream>
-#include <algorithm>
-#include <math.h>
-#include <iomanip>
-#include <vector>
-#include <map>
-#include <stdio.h>
-#include <time.h>
-#include <regex>
-#include <string>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-bool isPalindrome(string n)
-{
-    if (n.size() == 0)
-        return false;
-    int i, j;
-    for (i = 0, j = n.size() - 1; i <= j; i++, j--)
-    {
-        if (n[i] != n[j])
-            return false;
-    }
-    return true;
-}
+const int maxn = 100010;
 
-void check(vector<string> &res, map<pair<string, string>, bool> itemlist, vector<string> &items)
+int c[maxn];
+
+int n, m;
+
+int check(int mm)
 {
-    for (int i = 0; i < items.size() - 1; i++)
+    int Count = 1;
+    int tmp = 0;
+    for (int i = 0; i < n; ++i)
     {
-        for (int j = i + 1; j < items.size(); j++)
+        tmp += c[i];
+        if (tmp > mm)
         {
-            pair<string, string> p1 = pair<string, string>(items[i], items[j]);
-            if (itemlist.find(p1) != itemlist.end())
-            {
-                res.push_back("No");
-                return;
-            }
+            Count++;
+            tmp = 0;
+            tmp += c[i];
         }
     }
-    res.push_back("Yes");
-}
-
-class student
-{
-public:
-    string id;
-    int de;
-    int cai;
-    student(string s, int d, int c)
-    {
-        id = s;
-        de = d;
-        cai = c;
-    }
-};
-
-bool compare(student s1, student s2)
-{
-    int t1 = s1.de + s1.cai;
-    int t2 = s2.de + s2.cai;
-    if (t1 == t2)
-    {
-        if (s1.de == s2.de)
-            return s1.id < s2.id;
-        else
-            return s1.de > s2.de;
-    }
-    return t1 > t2;
+    return Count;
 }
 
 int main()
 {
-    int n, l, h;
-    cin >> n >> l >> h;
-    vector<student> vec;
-    vector<student> res;
-    while (n--)
+    scanf("%d %d", &n, &m);
+    for (int i = 0; i < n; ++i)
     {
-        string id;
-        int d, c;
-        cin >> id >> d >> c;
-        if (d >= l && c >= l)
-            vec.push_back(student(id, d, c));
+        scanf("%d", &c[i]);
     }
-    for (int i = 0; i < vec.size(); i++)
+    int Max = -1;
+    for (int i = 0; i < n; ++i)
+        Max = max(Max, c[i]);
+    int l = Max - 1, r = 1e9 + 10;
+    while (r - l > 1)
     {
-        if (vec[i].de >= h && vec[i].cai >= h)
-        {
-            res.push_back(vec[i]);
-        }
+        int mid = (l + r) / 2;
+        if (check(mid) > m)
+            l = mid;
+        else
+            r = mid;
     }
-    sort(res.begin(), res.end(), compare);
-    int temp = res.size();
-    for (int i = 0; i < vec.size(); i++)
-    {
-        if (vec[i].de >= h && vec[i].cai < h)
-        {
-            res.push_back(vec[i]);
-        }
-    }
-    sort(res.begin() + temp, res.end(), compare);
-    temp = res.size();
-    for (int i = 0; i < vec.size(); i++)
-    {
-        if (vec[i].de < h && vec[i].cai < h && vec[i].de >= vec[i].cai)
-        {
-            res.push_back(vec[i]);
-        }
-    }
-    sort(res.begin() + temp, res.end(), compare);
-    temp = res.size();
-    for (int i = 0; i < vec.size(); i++)
-    {
-        if (vec[i].de < h && vec[i].de < vec[i].cai)
-            res.push_back(vec[i]);
-    }
-    sort(res.begin() + temp, res.end(), compare);
-    cout << res.size() << endl;
-    for (int i = 0; i < res.size(); i++)
-    {
-        cout << res[i].id << " " << res[i].de << " " << res[i].cai << endl;
-    }
+    cout << r << endl;
+    return 0;
 }

@@ -29,21 +29,22 @@ void MakeMove(Mov m,int player);
 void UnmakeMove(Mov);
 int distance(Psquare p0,Psquare p1);
 
-//ï¿½Ì¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+
+//¹Ì¶¨Éî¶ÈËÑË÷
 void SimpleSearch();
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½+alphaBetaï¿½ï¿½ï¿½ï¿½
+//µü´ú¼ÓÉîËÑË÷+alphaBetaËÑË÷ 
 void IterDeeping();
-//ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//¼«Ð¡¼«´óËÑË÷
 int NegaMax00(int depth,int player,int MaxDepth);
-//ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½+ï¿½ï¿½Ê·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//¼«Ð¡¼«´óËÑË÷+ÀúÊ·±íÆô·¢
 int NegaMax(int depth, int player, int MaxDepth);
-//alphaBetaï¿½ï¿½ï¿½ï¿½
+//alphaBetaËÑË÷
 int alphabeta(int depth,int alpha,int beta,int player,int MaxDepth);
-//ï¿½Ð¶ï¿½ï¿½Ç·ï¿½ï¿½Ç½ï¿½ï¿½ï¿½
+//ÅÐ¶ÏÊÇ·ñÊÇ½ûÊÖ
 bool isBan(Psquare p0,int player);
-//ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½Ò»ï¿½ï¿½
+//ÈÎÒâÑ¡ÔñÒ»²½
 Mov mov_rd(Mov* moveList,int count);
-//ï¿½Ð¶ï¿½Ö´ï¿½ï¿½moveï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
+//ÅÐ¶ÏÖ´ÐÐmoveºóÆå¾ÖÊÇ·ñ½áÊø
 bool isGameOver(Mov move);
 
 void freeResource();

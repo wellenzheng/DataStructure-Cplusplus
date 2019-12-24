@@ -5,28 +5,31 @@
 
 typedef unsigned long DWORD;
 
-#define EMPTY_MOVE 0
-#define TURN_MOVE 1
-#define OPPONENT_MOVE 2
-#define OUTSIDE_MOVE 3
-//ï¿½ï¿½ï¿½å·½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½
-#define UP_DOWN 0
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-#define LEFTUP_RIGHTDOWN 1
-//ï¿½ï¿½ï¿½ï¿½
-#define LEFT_RIGHT 2
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-#define RIGHTUP_LEFTDOWN 3
+#define EMPTY_MOVE		0
+#define TURN_MOVE		1
+#define OPPONENT_MOVE	2
+#define OUTSIDE_MOVE	3
+//¶¨Òå·½Ïò
+//ÉÏÏÂ
+#define UP_DOWN				0
+//×óÉÏÓÒÏÂ
+#define LEFTUP_RIGHTDOWN	1
+//×óÓÒ
+#define LEFT_RIGHT			2
+//×óÏÂÓÒÉÏ
+#define RIGHTUP_LEFTDOWN	3
 
 typedef int Tsymbol;
 struct Tsquare;
 typedef Tsquare *Psquare;
 
-struct Tsquare
+
+
+struct Tsquare                   
 {
-	Tsymbol z;  //0=nothing, 1=my, 2=opponent, 3=outside
-	short x, y; //coordinates 0..width-1, 0..height-1
+  Tsymbol z;   //0=nothing, 1=my, 2=opponent, 3=outside
+  short x,y;   //coordinates 0..width-1, 0..height-1
+ 
 };
 
 #define MAX_BOARD 127
@@ -36,56 +39,58 @@ struct Mov
 	int x;
 	int y;
 	int val;
-	Mov *Nxt;
+	Mov* Nxt;
 };
 
-extern int diroff[9], width, height, height2;
-extern Psquare board, boardb, boardk;
+
+extern int diroff[9],width,height,height2;
+extern Psquare board,boardb,boardk;
 
 void boardInit();
 
-void SetChessOnBoard(int x, int y, int type);
+void SetChessOnBoard(int x,int y,int type);
 
-Psquare Square(int x, int y);
+Psquare Square(int x,int y);
 
-#define nxtP(p, i) (p = (Psquare)(((char *)p) + (i * s)))
-#define prvP(p, i) (p = (Psquare)(((char *)p) - (i * s)))
+#define nxtP(p,i) (p=(Psquare)(((char*)p)+(i*s)))
+#define prvP(p,i) (p=(Psquare)(((char*)p)-(i*s)))
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+
+//½ûÊÖÅÐ¶Ï
+//½ûÊÖÀàÐÍ
 #define NO_FORBIDDEN 0
 #define THREE_THREE_FBD 1
 #define FOUR_FOUR_FBD 2
 #define LONGFBD 3
 
-struct ChessAnalyzeData
-{
-	int adjsameNxt;		 //ï¿½ï¿½Â¼ï¿½ï¿½(x, y)Nextï¿½ï¿½ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	int adjemptyNxt;	 //ï¿½ï¿½Â¼adjsameï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
-	int jumpsameNxt;	 //ï¿½ï¿½Â¼adjemptyï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	int jumpemptyNxt;	//ï¿½ï¿½Â¼jumpsameï¿½ï¿½Ä¿ï¿½Î»ï¿½ï¿½
-	int jumpjumpsameNxt; //ï¿½ï¿½Â¼jumpemptyï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+struct ChessAnalyzeData{
+	int adjsameNxt;  //¼ÇÂ¼Óë(x, y)NextÏàÁÚµÄÁ¬ÐøºÚÉ«Æå×ÓÊý
+	int adjemptyNxt; //¼ÇÂ¼adjsameºóÁ¬Ðø¿ÕÎ»Êý
+	int jumpsameNxt; //¼ÇÂ¼adjemptyºóÁ¬ÐøºÚÉ«Æå×ÓÊý
+	int jumpemptyNxt; //¼ÇÂ¼jumpsameºóµÄ¿ÕÎ»Êý
+	int jumpjumpsameNxt; //¼ÇÂ¼jumpemptyºóµÄÁ¬ÐøºÚÉ«Æå×ÓÊý
 
-	int adjsamePre;		 //ï¿½ï¿½Â¼ï¿½ï¿½(x, y)preï¿½ï¿½ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	int adjemptyPre;	 //ï¿½ï¿½Â¼adjsameÇ°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
-	int jumpsamePre;	 //ï¿½ï¿½Â¼adjemptyÇ°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	int jumpemptyPre;	//ï¿½ï¿½Â¼jumpsameÇ°ï¿½Ä¿ï¿½Î»ï¿½ï¿½
-	int jumpjumpsamePre; //ï¿½ï¿½Â¼jumpemptyÇ°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	int adjsamePre;  //¼ÇÂ¼Óë(x, y)preÏàÁÚµÄÁ¬ÐøºÚÉ«Æå×ÓÊý
+	int adjemptyPre; //¼ÇÂ¼adjsameÇ°Á¬Ðø¿ÕÎ»Êý
+	int jumpsamePre; //¼ÇÂ¼adjemptyÇ°Á¬ÐøºÚÉ«Æå×ÓÊý
+	int jumpemptyPre; //¼ÇÂ¼jumpsameÇ°µÄ¿ÕÎ»Êý
+	int jumpjumpsamePre; //¼ÇÂ¼jumpemptyÇ°µÄÁ¬ÐøºÚÉ«Æå×ÓÊý
 
 	Psquare pNxt;
 	Psquare pPrv;
 
-	ChessAnalyzeData(); //ï¿½ï¿½ï¿½ï¿½
+	ChessAnalyzeData();//¹¹Ôì
 };
 
-void AnalysisLine(Psquare p0, int direction, ChessAnalyzeData *data);
+void AnalysisLine(Psquare p0,int direction,ChessAnalyzeData* data);
 
-//ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½
-int KeyPointForbiddenCheck(Psquare p, int direction, int shift);
-//ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½
-int ForbiddenCheck(ChessAnalyzeData *checkData, Psquare p0);
+//¹Ø¼üµã½ûÊÖ¼ì²â
+int KeyPointForbiddenCheck(Psquare p,int direction,int shift);
+//½ûÊÖ¼ì²â
+int ForbiddenCheck(ChessAnalyzeData *checkData,Psquare p0);
 
-Mov *MergeSort(Mov *source, int count);
-void MergePass(Mov *source, Mov *target, const int s, const int n);
-void Merge(Mov *source, Mov *target, int l, int m, int r);
+
+Mov* MergeSort(Mov* source,int count);
+void MergePass(Mov* source,Mov* target,const int s,const int n);
+void Merge(Mov* source,Mov* target,int l,int m,int r);
 #endif
